@@ -18,6 +18,7 @@ module.exports = function (gruntOrShipit) {
 
     function run(remote) {
       var method = remote ? 'remote' : 'local';
+      if(!argv.cmd) return shipit.log(chalk.red('Please specify a npm command eg', chalk.gray('shipit staging npm:run', chalk.white('--cmd "update"'))));
       return shipit[method](
         sprintf('cd %s && npm %s', shipit.currentPath, argv.cmd)
       );
