@@ -1,6 +1,6 @@
 {
   "name": "shipit-npm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Npm tasks for shipit.",
   "main": "index.js",
   "scripts": {
@@ -24,5 +24,16 @@
   "bugs": {
     "url": "https://github.com/callerc1/shipit-npm/issues"
   },
-  "homepage": "https://github.com/callerc1/shipit-npm"
+  "homepage": "https://github.com/callerc1/shipit-npm",
+  "devDependencies": {
+    "shipit-cli": "^1.1.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.1",
+    "chalk": "^0.5.1",
+    "path2": "^0.1.0",
+    "shipit-utils": "^1.0.2",
+    "sprintf-js": "^1.0.2",
+    "yargs": "^3.4.5"
+  }
 }
