@@ -22,7 +22,7 @@ module.exports = function (gruntOrShipit) {
       var cdPath = remote ? shipit.releasePath || shipit.currentPath : shipit.config.workspace;
 
       if(!cdPath) {
-        var msg = remote ? 'Please specify a deploy to path (shipit.config.deployTo)' : 'Please specify a workspace (shipit.config.workspace)'
+        var msg = remote ? 'Please specify a deploy to path (shipit.config.deployTo)' : 'Please specify a workspace (shipit.config.workspace)';
         throw new Error(
           shipit.log(chalk.red(msg))
         );

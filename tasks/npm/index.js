@@ -16,7 +16,7 @@ module.exports = function (gruntOrShipit) {
 
   utils.registerTask(gruntOrShipit, 'npm', [
     'npm:install'
-  ]);
+  ], false);
 
   shipit.on('deploy', function () {
 
