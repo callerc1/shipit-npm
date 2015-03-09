@@ -17,17 +17,41 @@ module.exports = function (gruntOrShipit) {
     shipit = init(shipit);
 
     function run(remote) {
+
       var method = remote ? 'remote' : 'local';
-      if(!argv.cmd) return shipit.log(chalk.red('Please specify a npm command eg', chalk.gray('shipit staging npm:run', chalk.white('--cmd "update"'))));
+      var cdPath = remote ? shipit.releasePath || shipit.currentPath : shipit.config.workspace;
+
+      if(!cdPath) {
+        var msg = remote ? 'Please specify a deploy to path (shipit.config.deployTo)' : 'Please specify a workspace (shipit.config.workspace)'
+        throw new Error(
+          shipit.log(chalk.red(msg))
+        );
+      }
+
+      if(!argv.cmd) {
+        throw new Error(
+          shipit.log(
+            chalk.red('Please specify a npm command eg'),
+            chalk.gray('shipit staging npm:run'),
+            chalk.white('--cmd "update"')
+          )
+        );
+      }
+
       return shipit[method](
-        sprintf('cd %s && npm %s', shipit.currentPath, argv.cmd)
+        sprintf('cd %s && npm %s', cdPath, argv.cmd)
       );
+
     }
 
     shipit.log('Running - npm ' + argv.cmd);
+
     return run(shipit.config.npm.remote)
     .then(function () {
       shipit.log(chalk.green('Complete - npm ' + argv.cmd));
+    })
+    .catch(function (e) {
+      shipit.log(e);
     });
   }
 };
