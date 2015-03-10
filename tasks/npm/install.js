@@ -9,7 +9,7 @@ var Bluebird = require('bluebird');
  */
 
 module.exports = function (gruntOrShipit) {
-  utils.registerTask(gruntOrShipit, 'npm:install', task);
+  utils.registerTask(gruntOrShipit, 'npm:install', task, false);
 
   function task() {
     var shipit = utils.getShipit(gruntOrShipit);
