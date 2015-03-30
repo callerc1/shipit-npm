@@ -1,7 +1,6 @@
 var utils = require('shipit-utils');
 var chalk = require('chalk');
 var sprintf = require('sprintf-js').sprintf;
-var init = require('../../lib/init');
 var Bluebird = require('bluebird');
 
 /**
@@ -9,14 +8,22 @@ var Bluebird = require('bluebird');
  */
 
 module.exports = function (gruntOrShipit) {
-  utils.registerTask(gruntOrShipit, 'npm:install', task, false);
+  utils.registerTask(gruntOrShipit, 'npm:install', task);
 
   function task() {
     var shipit = utils.getShipit(gruntOrShipit);
-    shipit = init(shipit);
 
     function install(remote) {
 
+      if(!remote) {
+        throw new Error(
+          shipit.log(
+            chalk.red('shipit.config.npm.remote is', remote),
+            chalk.gray('try running npm:init before npm:install')
+          )
+        );
+      }
+      shipit.log('Installing npm modules.');
       var method = remote ? 'remote' : 'local';
       var cdPath = remote ? shipit.releasePath || shipit.currentPath : shipit.config.workspace;
 
@@ -37,13 +44,15 @@ module.exports = function (gruntOrShipit) {
 
     }
 
-    shipit.log('Installing npm modules.');
     return install(shipit.config.npm.remote)
     .then(function () {
       shipit.log(chalk.green('npm install complete'));
     })
+    .then(function () {
+      shipit.emit('npm_installed')
+    })
     .catch(function (e) {
-      shipit.log(e);
+      shipit.log(chalk.red(e));
     });
   }
 };

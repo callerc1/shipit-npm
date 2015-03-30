@@ -1,7 +1,6 @@
 var utils = require('shipit-utils');
 var chalk = require('chalk');
 var sprintf = require('sprintf-js').sprintf;
-var init = require('../../lib/init');
 var Bluebird = require('bluebird');
 var argv = require('yargs').argv;
 
@@ -10,13 +9,21 @@ var argv = require('yargs').argv;
  */
 
 module.exports = function (gruntOrShipit) {
-  utils.registerTask(gruntOrShipit, 'npm:run', task);
+  utils.registerTask(gruntOrShipit, 'npm:cmd', task);
 
   function task() {
     var shipit = utils.getShipit(gruntOrShipit);
-    shipit = init(shipit);
 
-    function run(remote) {
+    function cmd(remote) {
+
+      if(!remote) {
+        throw new Error(
+          shipit.log(
+            chalk.red('shipit.config.npm.remote is', remote),
+            chalk.gray('try running npm:init before npm:cmd')
+          )
+        );
+      }
 
       var method = remote ? 'remote' : 'local';
       var cdPath = remote ? shipit.releasePath || shipit.currentPath : shipit.config.workspace;
@@ -32,11 +39,13 @@ module.exports = function (gruntOrShipit) {
         throw new Error(
           shipit.log(
             chalk.red('Please specify a npm command eg'),
-            chalk.gray('shipit staging npm:run'),
+            chalk.gray('shipit staging npm:cmd'),
             chalk.white('--cmd "update"')
           )
         );
       }
+
+      shipit.log('Running - ', chalk.blue('npm ', argv.cmd));
 
       return shipit[method](
         sprintf('cd %s && npm %s', cdPath, argv.cmd)
@@ -44,9 +53,7 @@ module.exports = function (gruntOrShipit) {
 
     }
 
-    shipit.log('Running - npm ' + argv.cmd);
-
-    return run(shipit.config.npm.remote)
+    return cmd(shipit.config.npm.remote)
     .then(function () {
       shipit.log(chalk.green('Complete - npm ' + argv.cmd));
     })

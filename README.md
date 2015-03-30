@@ -29,9 +29,9 @@ shipit staging deploy
 Or you can run the tasks separatly :
 
 ```
-shipit staging npm
-  shipit staging npm:install
-  shipit staging npm:run --cmd "update"
+shipit staging npm:init npm:install
+shipit staging npm:run --cmd "update"
+
 ```
 
 
@@ -77,6 +77,15 @@ module.exports = function (shipit) {
   });
 };
 ```
+
+## Workflow tasks
+
+- deploy (event)
+  - npm:init
+    - Emit event "npm_inited".
+- npm_inited (event)
+  - npm:install
+    - Emit event "npm_installed"
 
 ## License
 

@@ -1,5 +1,4 @@
 var utils = require('shipit-utils');
-var init = require('../../lib/init');
 
 /**
  * Register NPM tasks.
@@ -11,21 +10,27 @@ var init = require('../../lib/init');
 module.exports = function (gruntOrShipit) {
   var shipit = utils.getShipit(gruntOrShipit);
 
+  require('./init')(gruntOrShipit);
   require('./install')(gruntOrShipit);
-  require('./run')(gruntOrShipit);
+  require('./cmd')(gruntOrShipit);
 
-  utils.registerTask(gruntOrShipit, 'npm', [
-    'npm:install'
+  utils.registerTask(gruntOrShipit, 'npm:run', [
+    'npm:init',
+    'npm:cmd'
   ]);
+
 
   shipit.on('deploy', function () {
 
-    shipit = init(shipit);
+    utils.runTask(gruntOrShipit, 'npm:init')
 
-    var onEvent = shipit.config.npm.remote ? 'updated' : 'fetched';
+    shipit.on('npm_inited', function () {
+      var shipit = utils.getShipit(gruntOrShipit);
+      var onEvent = shipit.config.npm.remote ? 'updated' : 'fetched';
 
-    shipit.on(onEvent, function () {
-      utils.runTask(gruntOrShipit, 'npm');
+      shipit.on(onEvent, function () {
+        utils.runTask(gruntOrShipit, 'npm:install');
+      });
     });
 
   });
