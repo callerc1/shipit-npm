@@ -17,8 +17,7 @@ module.exports = function (gruntOrShipit) {
     shipit.config.npm.remote = shipit.config.npm.remote !== false;
     shipit.config.npm.installArgs = shipit.config.npm.installArgs || [];
     shipit.config.npm.installFlags = shipit.config.npm.installFlags || [];
-
-    shipit.log("inside init");
+    shipit.config.npm.preinstall = shipit.config.npm.preinstall || false;
 
     shipit.emit('npm_inited');
   }
