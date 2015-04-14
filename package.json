@@ -1,6 +1,6 @@
 {
   "name": "shipit-npm",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Npm tasks for shipit.",
   "main": "index.js",
   "scripts": {
