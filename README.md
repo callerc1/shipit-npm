@@ -1,6 +1,6 @@
 # shipit-npm
 
-A set of tasks for [Shipit](https://github.com/shipitjs/shipit) used for npm specific tasks on deploy.
+A set of tasks for [Shipit](https://github.com/shipitjs/shipit) used for [npm](https://docs.npmjs.com/) specific tasks on deploy.
 
 Inspired by the [capistrano/composer](https://github.com/capistrano/composer/) extension.
 
@@ -8,7 +8,7 @@ Inspired by the [capistrano/composer](https://github.com/capistrano/composer/) e
 **Features:**
 
 - Triggered on the `updated` or `fetched` event from [shipit-deploy](https://github.com/shipitjs/shipit-deploy)
-- Has a direct pass though task to npm cli
+- Has a direct pass though task to [npm cli](https://docs.npmjs.com/cli)
 - Works via [shipit-cli](https://github.com/shipitjs/shipit) and [grunt-shipit](https://github.com/shipitjs/grunt-shipit)
 
 ## Install
@@ -37,7 +37,7 @@ shipit staging npm:run --cmd "update"
 
 ## Options `shipit.config.npm`
 
-### `remote`
+### `npm.remote`
 
 Type: `Boolean`
 Default: `true`
