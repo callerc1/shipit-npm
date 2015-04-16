@@ -1,8 +1,8 @@
 var utils = require('shipit-utils');
 
 /**
- * Init task.
- * - Emit deploy event.
+ * Preinstall task.
+ * - Emits npm_preinstall event.
  */
 
 module.exports = function (gruntOrShipit) {
