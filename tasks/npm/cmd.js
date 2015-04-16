@@ -5,7 +5,7 @@ var Bluebird = require('bluebird');
 var argv = require('yargs').argv;
 
 /**
- * run task allows access to any npm cli command
+ * cmd task allows access to any npm cli command
  */
 
 module.exports = function (gruntOrShipit) {
@@ -15,15 +15,6 @@ module.exports = function (gruntOrShipit) {
     var shipit = utils.getShipit(gruntOrShipit);
 
     function cmd(remote) {
-
-      if(!remote) {
-        throw new Error(
-          shipit.log(
-            chalk.red('shipit.config.npm.remote is', remote),
-            chalk.gray('try running npm:init before npm:cmd')
-          )
-        );
-      }
 
       var method = remote ? 'remote' : 'local';
       var cdPath = remote ? shipit.releasePath || shipit.currentPath : shipit.config.workspace;
@@ -39,7 +30,7 @@ module.exports = function (gruntOrShipit) {
         throw new Error(
           shipit.log(
             chalk.red('Please specify a npm command eg'),
-            chalk.gray('shipit staging npm:cmd'),
+            chalk.gray('shipit staging npm:init npm:cmd'),
             chalk.white('--cmd "update"')
           )
         );
@@ -53,12 +44,22 @@ module.exports = function (gruntOrShipit) {
 
     }
 
-    return cmd(shipit.config.npm.remote)
-    .then(function () {
-      shipit.log(chalk.green('Complete - npm ' + argv.cmd));
-    })
-    .catch(function (e) {
-      shipit.log(e);
-    });
+    if(shipit.npm_inited) {
+
+      return cmd(shipit.config.npm.remote)
+      .then(function () {
+        shipit.log(chalk.green('Complete - npm ' + argv.cmd));
+      })
+      .catch(function (e) {
+        shipit.log(e);
+      });
+
+    }else {
+      throw new Error(
+        shipit.log(
+          chalk.gray('try running npm:init before npm:cmd')
+        )
+      );
+    }
   }
 };

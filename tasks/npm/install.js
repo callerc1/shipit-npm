@@ -15,14 +15,6 @@ module.exports = function (gruntOrShipit) {
 
     function install(remote) {
 
-      if(!remote) {
-        throw new Error(
-          shipit.log(
-            chalk.red('shipit.config.npm.remote is', remote),
-            chalk.gray('try running npm:init before npm:install')
-          )
-        );
-      }
       shipit.log('Installing npm modules.');
       var method = remote ? 'remote' : 'local';
       var cdPath = remote ? shipit.releasePath || shipit.currentPath : shipit.config.workspace;
@@ -44,15 +36,25 @@ module.exports = function (gruntOrShipit) {
 
     }
 
-    return install(shipit.config.npm.remote)
-    .then(function () {
-      shipit.log(chalk.green('npm install complete'));
-    })
-    .then(function () {
-      shipit.emit('npm_installed')
-    })
-    .catch(function (e) {
-      shipit.log(chalk.red(e));
-    });
+    if(shipit.npm_inited) {
+
+      return install(shipit.config.npm.remote)
+      .then(function () {
+        shipit.log(chalk.green('npm install complete'));
+      })
+      .then(function () {
+        shipit.emit('npm_installed')
+      })
+      .catch(function (e) {
+        shipit.log(chalk.red(e));
+      });
+
+    }else {
+      throw new Error(
+        shipit.log(
+          chalk.gray('try running npm:init before npm:install')
+        )
+      );
+    }
   }
 };
