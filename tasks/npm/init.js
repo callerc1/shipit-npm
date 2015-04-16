@@ -19,6 +19,7 @@ module.exports = function (gruntOrShipit) {
     shipit.config.npm.installFlags = shipit.config.npm.installFlags || [];
     shipit.config.npm.preinstall = shipit.config.npm.preinstall || false;
 
+    shipit.npm_inited = true;
     shipit.emit('npm_inited');
   }
 };
