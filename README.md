@@ -84,8 +84,8 @@ module.exports = function (shipit) {
     default: {
       npm: {
         remote: false,
-        installArgs: ['gulp']
-        installFlags: ['-g'];
+        installArgs: ['gulp'],
+        installFlags: ['-g']
       }
     }
   });
