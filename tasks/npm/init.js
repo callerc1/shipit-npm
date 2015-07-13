@@ -19,6 +19,9 @@ module.exports = function (gruntOrShipit) {
     shipit.config.npm.installFlags = shipit.config.npm.installFlags || [];
     shipit.config.npm.preinstall = shipit.config.npm.preinstall || false;
 
+    var triggerEvent = shipit.config.npm.remote ? 'updated' : 'fetched';
+    shipit.config.npm.triggerEvent = shipit.config.npm.triggerEvent !== undefined ? shipit.config.npm.triggerEvent : onEvent;
+
     shipit.npm_inited = true;
     shipit.emit('npm_inited');
   }
