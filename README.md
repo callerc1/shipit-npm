@@ -58,19 +58,12 @@ Default: []
 
 An array or string specifying npm flags passed to the [npm install](https://docs.npmjs.com/cli/install) cmd.
 
-### `npm.preinstall`
+### `npm.triggerEvent`
 
-Type: `Boolean`
-Default: `false`
+Type: `String`,`Boolean`
+Default: `updated` or `fetched` (depending on `npm.remote` value)
 
-A Boolean to determine whether to emit a pre install event (`npm_preinstall`). Note: if you use this feature you will have to emit `npm_pre_install_complete` once your preinstall task is completed eg:
-```js
-shipit.on('npm_preinstall', function() {
-  console.log('MY PRE INSTALL TASK')
-  # do somthing cool
-  shipit.emit('npm_pre_install_complete')
-})
-```
+An event name that triggers `npm:install`. Can be set to false to prevent the `npm:install` task from listening to any events.
 
 
 ### Example `shipitfile.js` options usage
@@ -108,9 +101,7 @@ module.exports = function (shipit) {
 - on Event "deploy" (shipit-deploy initialized)
   - Runs *npm:init*
   - on Event "npm_inited"
-    - Runs *npm:preinstall* or *npm:install* (Triggered on the `updated` or `fetched` event from [shipit-deploy](https://github.com/shipitjs/shipit-deploy))
-- on Event "npm_pre_install_complete"
-  - npm:install
+    - Runs *npm:install* (Triggered on the `updated` or `fetched` event from [shipit-deploy](https://github.com/shipitjs/shipit-deploy) or by a custom `npm.triggerEvent` as mentioned above.)
 
 ## License
 
